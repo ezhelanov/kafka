@@ -1,6 +1,7 @@
 package com.egor.kafka;
 
-import org.apache.kafka.clients.producer.Producer;
+import com.egor.kafka.services.producer.ProducerService;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -8,11 +9,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 
+import javax.annotation.Resource;
+import java.util.Properties;
+
 @SpringBootApplication
 public class KafkaApplication {
 
     @Autowired
-    private Producer<String, String> producer;
+    private ProducerService producerService;
 
 
     public static void main(String[] args) {
@@ -22,18 +26,7 @@ public class KafkaApplication {
 
     @EventListener(ContextRefreshedEvent.class)
     public void doSomething(ContextRefreshedEvent event) {
-
-        String topic = "games";
-        int partition = 0;
-        String key = "K";
-        String value = "Tomy Lee Jones";
-
-        for (int i = 0; i < 3; i++) {
-            producer.send(new ProducerRecord<>(
-                    topic, partition, key + i, value
-            ));
-        }
-        producer.close();
+        producerService.pushToOnePartitionTopic();
     }
 
 }
