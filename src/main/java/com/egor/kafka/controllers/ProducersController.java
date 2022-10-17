@@ -47,7 +47,9 @@ public class ProducersController {
 
     @PostMapping("sendAsync")
     public void sendWithCallback(@RequestParam String name,
-                                 @RequestParam String topic, @RequestParam int partition, @RequestParam String value) {
+                                 @RequestParam String topic,
+                                 @RequestParam int partition,
+                                 @RequestParam String value) {
         producers.get(name).send(topic, partition, value);
     }
 

@@ -1,5 +1,6 @@
 package com.egor.kafka.consumers;
 
+import com.egor.kafka.controllers.payload.response.StringConsumerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -56,6 +57,13 @@ public class StringConsumer {
 
     public void commitSync(){
         consumer.commitSync();
+    }
+
+    public StringConsumerDTO toDTO() {
+        var dto = new StringConsumerDTO();
+        dto.setGroupId(consumer.groupMetadata().groupId());
+        dto.setAssignment(consumer.assignment());
+        return dto;
     }
 
 

@@ -10,6 +10,7 @@ public class StringProducer {
 
     private final Producer<String, String> producer;
 
+
     private final Callback callback = new Callback() {
         @Override
         public void onCompletion(RecordMetadata recordMetadata, Exception e) {
@@ -23,7 +24,7 @@ public class StringProducer {
 
 
     public void send(String topic, int partition, String value) {
-        producer.send(new ProducerRecord<>(topic, partition, "Key"+partition*1000, value), callback);
+        producer.send(new ProducerRecord<>(topic, partition, "Key" + partition * 1000, value), callback);
     }
 
     public void close() {
