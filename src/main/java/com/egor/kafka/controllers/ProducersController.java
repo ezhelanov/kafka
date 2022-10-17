@@ -17,19 +17,19 @@ public class ProducersController {
     private final Map<String, StringProducer> producers = new HashMap<>();
 
 
-    @PostMapping("producer")
+    @GetMapping
+    public Set<String> getAll(){
+        return producers.keySet();
+    }
+
+    @PostMapping("add")
     public void addProducer(@RequestParam String name){
         producers.put(name, new StringProducer(new ProducerProperties()));
     }
 
-    @PutMapping("producer/close")
+    @PutMapping("close")
     public void close(@RequestParam String name){
         producers.get(name).close();
-    }
-
-    @GetMapping
-    public Set<String> getAll(){
-        return producers.keySet();
     }
 
     @PutMapping("closeAll")
@@ -45,7 +45,7 @@ public class ProducersController {
         producers.clear();
     }
 
-    @PostMapping("producer/sendAsync")
+    @PostMapping("sendAsync")
     public void sendWithCallback(@RequestParam String name,
                                  @RequestParam String topic, @RequestParam int partition, @RequestParam String value) {
         producers.get(name).send(topic, partition, value);
