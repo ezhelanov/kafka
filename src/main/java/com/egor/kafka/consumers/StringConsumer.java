@@ -2,6 +2,7 @@ package com.egor.kafka.consumers;
 
 import com.egor.kafka.services.StringConsumerService;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,24 +17,26 @@ public class StringConsumer extends KafkaConsumer<String, String> {
     @Autowired
     private StringConsumerService stringConsumerService;
 
+    @Setter
+    private boolean enabled;
 
     @Getter
     private final Thread thread = new Thread(() -> {
 
-        while (true) {
+        while (enabled) {
             var messages = new ArrayList<String>();
 
-            log.debug("Start poll");
+            log.error("Start poll");
             for (var record : poll(Duration.ofMillis(1000))) {
-                log.trace("partition={}, offset={}, key={}, value={}, timestmap={}", record.partition(), record.offset(), record.key(), record.value(), record.timestamp());
+                log.warn("partition={}, offset={}, key={}, value={}, timestmap={}", record.partition(), record.offset(), record.key(), record.value(), record.timestamp());
                 messages.add(record.value());
             }
-            log.debug("End poll");
+            log.error("End poll");
 
             stringConsumerService.getTotalReadMessages().addAll(messages);
         }
 
-    });;
+    });
 
 
     public StringConsumer(Properties properties) {

@@ -34,6 +34,22 @@ public class ConsumersController {
         return stringConsumerService.getTotalReadMessages();
     }
 
+    @PostMapping("start")
+    public void startPulling(@RequestParam String name) {
+        var consumer = consumers.get(name);
+        consumer.setEnabled(true);
+        consumer.getThread().start();
+        log.info("Consumer {} started pulling...", name);
+    }
+
+    @PostMapping("stop")
+    public void stopPulling(@RequestParam String name) throws InterruptedException {
+        var consumer = consumers.get(name);
+        consumer.setEnabled(false);
+        consumer.getThread().join();
+        log.info("Consumer {} stopped pulling...", name);
+    }
+
     @PostMapping("add")
     public void addConsumer(@RequestParam String name,
                             @RequestParam String groupId,
