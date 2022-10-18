@@ -42,6 +42,7 @@ public class ProducersController {
 
     @DeleteMapping
     public void deleteAll(){
+        closeAll();
         producers.clear();
     }
 
@@ -50,7 +51,7 @@ public class ProducersController {
                                  @RequestParam String topic,
                                  @RequestParam int partition,
                                  @RequestParam String value) {
-        producers.get(name).send(topic, partition, value);
+       // producers.get(name).send(new ProducerRecord<String, String>(topic, partition, value));
     }
 
 }

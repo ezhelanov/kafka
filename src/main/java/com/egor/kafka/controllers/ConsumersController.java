@@ -1,13 +1,13 @@
 package com.egor.kafka.controllers;
 
 import com.egor.kafka.consumers.StringConsumer;
-import com.egor.kafka.controllers.payload.response.StringConsumerDTO;
-import com.egor.kafka.properties.ConsumerProperties;
+import com.egor.kafka.services.StringConsumerFactory;
+import com.egor.kafka.services.StringConsumerService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -17,11 +17,21 @@ public class ConsumersController {
     private final Map<String, StringConsumer> consumers = new HashMap<>();
 
 
+    @Autowired
+    private StringConsumerFactory stringConsumerFactory;
+
+    @Autowired
+    private StringConsumerService stringConsumerService;
+
+
     @GetMapping
-    public Map<String, StringConsumerDTO> getAll(){
-        var map = new HashMap<String, StringConsumerDTO>();
-        consumers.forEach((k,v) -> map.put(k, v.toDTO()));
-        return map;
+    public Set<String> getAll(){
+        return consumers.keySet();
+    }
+
+    @GetMapping("messages")
+    public List<String> getTotalReadMessages(){
+        return stringConsumerService.getTotalReadMessages();
     }
 
     @PostMapping("add")
@@ -30,13 +40,13 @@ public class ConsumersController {
                             @RequestParam(defaultValue = "true") boolean enableAutoCommit,
                             @RequestParam(defaultValue = "latest") String autoOffsetReset,
                             @RequestParam int autoCommitIntervalMs){
-        consumers.put(name, new StringConsumer(new ConsumerProperties(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs)));
+        consumers.put(name, stringConsumerFactory.get(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs));
     }
 
     @PatchMapping("subscribe")
     public void subscribe(@RequestParam String name,
                           @RequestParam String topic) {
-        consumers.get(name).subscribe(topic);
+        consumers.get(name).subscribe(Collections.singleton(topic));
     }
 
     @PutMapping("close")
@@ -54,6 +64,7 @@ public class ConsumersController {
 
     @DeleteMapping
     public void deleteAll(){
+        closeAll();
         consumers.clear();
     }
 
