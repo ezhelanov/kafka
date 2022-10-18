@@ -1,18 +1,13 @@
 package com.egor.kafka.consumers;
 
 import com.egor.kafka.services.GroupService;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Slf4j
 public class StringConsumer extends KafkaConsumer<String, String> {
@@ -20,11 +15,13 @@ public class StringConsumer extends KafkaConsumer<String, String> {
     @Autowired
     private GroupService groupService;
 
-    @Setter
+
     private boolean enabled;
 
-    @Getter
-    private final Thread thread = new Thread(() -> {
+    private Thread thread;
+
+
+    private final Runnable runnable = () -> {
 
         while (enabled) {
             var messages = new ArrayList<String>();
@@ -39,30 +36,52 @@ public class StringConsumer extends KafkaConsumer<String, String> {
             groupService.getTotalReadMessages().addAll(messages);
         }
 
-    });
+    };
 
 
-    public void seekAllPartitions(long offset) {
-        for (TopicPartition topicPartition : assignment()) {
-            seek(topicPartition, offset);
+    public void startPulling() {
+        if (thread != null) return;
+
+        enabled = true;
+        thread = new Thread(runnable);
+        thread.start();
+    }
+
+    public void stopPulling() {
+        if (thread == null) return;
+
+        enabled = false;
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
         }
     }
 
-    public void seekOnePartition(int partition, long offset) {
-        assignment().stream()
-                .filter(topicPartition -> topicPartition.partition() == partition)
-                .findFirst()
-                .ifPresent(topicPartition -> seek(topicPartition, offset));
-    }
 
-    public void assign(String topic, int... partitions) {
-        assign(
-                IntStream.of(partitions).mapToObj(partition -> new TopicPartition(topic, partition)).collect(Collectors.toSet())
-        );
-    }
+
+//    public void seekAllPartitions(long offset) {
+//        for (TopicPartition topicPartition : assignment()) {
+//            seek(topicPartition, offset);
+//        }
+//    }
+//
+//    public void seekOnePartition(int partition, long offset) {
+//        assignment().stream()
+//                .filter(topicPartition -> topicPartition.partition() == partition)
+//                .findFirst()
+//                .ifPresent(topicPartition -> seek(topicPartition, offset));
+//    }
+//
+//    public void assign(String topic, int... partitions) {
+//        assign(
+//                IntStream.of(partitions).mapToObj(partition -> new TopicPartition(topic, partition)).collect(Collectors.toSet())
+//        );
+//    }
 
 
     public StringConsumer(Properties properties) {
         super(properties);
     }
+
 }

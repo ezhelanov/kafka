@@ -36,17 +36,13 @@ public class ConsumersController {
 
     @PostMapping("start")
     public void startPulling(@RequestParam String name) {
-        var consumer = consumers.get(name);
-        consumer.setEnabled(true);
-        consumer.getThread().start();
+        consumers.get(name).startPulling();
         log.info("Consumer {} started pulling...", name);
     }
 
     @PostMapping("stop")
     public void stopPulling(@RequestParam String name) throws InterruptedException {
-        var consumer = consumers.get(name);
-        consumer.setEnabled(false);
-        consumer.getThread().join();
+        consumers.get(name).stopPulling();
         log.info("Consumer {} stopped pulling...", name);
     }
 
