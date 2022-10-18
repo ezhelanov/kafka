@@ -1,6 +1,6 @@
 package com.egor.kafka.consumers;
 
-import com.egor.kafka.services.GroupService;
+import com.egor.kafka.services.ConsumerGroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.util.Properties;
 public class StringConsumer extends KafkaConsumer<String, String> {
 
     @Autowired
-    private GroupService groupService;
+    private ConsumerGroupService consumerGroupService;
 
 
     private boolean enabled;
@@ -33,7 +33,7 @@ public class StringConsumer extends KafkaConsumer<String, String> {
             }
             log.error("End poll");
 
-            groupService.getTotalReadMessages().addAll(messages);
+            consumerGroupService.getTotalReadMessages().addAll(messages);
         }
 
     };

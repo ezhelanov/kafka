@@ -1,8 +1,8 @@
 package com.egor.kafka.controllers;
 
 import com.egor.kafka.consumers.StringConsumer;
-import com.egor.kafka.services.StringConsumerFactory;
-import com.egor.kafka.services.GroupService;
+import com.egor.kafka.consumers.StringConsumerFactory;
+import com.egor.kafka.services.ConsumerGroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class ConsumersController {
     private StringConsumerFactory stringConsumerFactory;
 
     @Autowired
-    private GroupService groupService;
+    private ConsumerGroupService consumerGroupService;
 
 
     @GetMapping
@@ -31,7 +31,7 @@ public class ConsumersController {
 
     @GetMapping("messages")
     public List<String> getTotalReadMessages(){
-        return groupService.getTotalReadMessages();
+        return consumerGroupService.getTotalReadMessages();
     }
 
     @PostMapping("start")

@@ -1,6 +1,4 @@
-package com.egor.kafka.services;
-
-import com.egor.kafka.consumers.StringConsumer;
+package com.egor.kafka.consumers;
 
 public abstract class StringConsumerFactory {
 
