@@ -4,13 +4,14 @@ import com.egor.kafka.consumers.StringConsumer;
 import com.egor.kafka.consumers.StringConsumerFactory;
 import com.egor.kafka.dtos.StringConsumerDTO;
 import com.egor.kafka.mappers.StringConsumerMapper;
-import com.egor.kafka.services.ConsumerGroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -24,29 +25,15 @@ public class ConsumersController {
     private StringConsumerFactory stringConsumerFactory;
 
     @Autowired
-    private ConsumerGroupService consumerGroupService;
-
-    @Autowired
     private StringConsumerMapper mapper;
 
 
     @GetMapping
     public Set<StringConsumerDTO> getAll(){
         consumers.values().forEach(StringConsumer::stopPulling);
-        try {
-            return mapper.map(consumers.values());
-        } finally {
-            consumers.values().stream()
-                    .filter(consumer -> !CollectionUtils.isEmpty(consumer.subscription()))
-                    .filter(consumer -> consumer.getThread() != null)
-                    .forEach(StringConsumer::startPulling);
-        }
+        return mapper.map(consumers.values());
     }
 
-    @GetMapping("messages")
-    public List<String> getTotalReadMessages(){
-        return consumerGroupService.getTotalReadMessages();
-    }
 
     @PostMapping("start")
     public void startPulling(@RequestParam String name) {
