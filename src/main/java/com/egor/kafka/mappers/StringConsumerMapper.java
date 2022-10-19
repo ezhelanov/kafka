@@ -18,6 +18,7 @@ public abstract class StringConsumerMapper {
         var dto = new StringConsumerDTO();
         dto.setAssignment(topicPartitionMapper.map(consumer.assignment()));
         dto.setName(consumer.getName());
+        dto.setSubscriptions(consumer.subscription());
         dto.setGroupId(consumer.groupMetadata() == null ? null : consumer.groupMetadata().groupId());
         return dto;
     }

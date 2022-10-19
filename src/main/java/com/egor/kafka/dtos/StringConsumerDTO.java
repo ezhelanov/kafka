@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@JsonPropertyOrder({"name", "groupId", "assignment"})
+@JsonPropertyOrder({"name", "groupId", "subscriptions", "assignment"})
 public class StringConsumerDTO {
 
     private Set<TopicPartitionDTO> assignment;
@@ -16,4 +16,6 @@ public class StringConsumerDTO {
     private String groupId;
 
     private String name;
+
+    private Set<String> subscriptions;
 }

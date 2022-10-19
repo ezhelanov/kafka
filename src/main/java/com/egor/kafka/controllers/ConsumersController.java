@@ -38,42 +38,28 @@ public class ConsumersController {
     @PostMapping("start")
     public void start(@RequestParam String name) {
         consumers.get(name).startPulling();
-        log.info("Consumer {} started pulling...", name);
     }
     @PostMapping("startAll")
     public void startAll() {
-        consumers.forEach((name, consumer) -> {
-            consumer.startPulling();
-            log.info("Consumer {} started pulling...", name);
-        });
+        consumers.values().forEach(StringConsumer::startPulling);
     }
 
     @PostMapping("stop")
     public void stop(@RequestParam String name) {
         consumers.get(name).stopPulling();
-        log.info("Consumer {} stopped pulling...", name);
     }
     @PostMapping("stopAll")
     public void stopAll() {
-        consumers.forEach((name, consumer) -> {
-            consumer.stopPulling();
-            log.info("Consumer {} stopped pulling...", name);
-        });
+        consumers.values().forEach(StringConsumer::stopPulling);
     }
 
     @PutMapping("close")
     public void close(@RequestParam String name){
-        var consumer = consumers.get(name);
-        consumer.stopPulling();
-        consumer.close();
+        consumers.get(name).close();
     }
     @PutMapping("closeAll")
     public void closeAll() {
-        stopAll();
-        consumers.forEach((name, consumer) -> {
-            consumer.close();
-            log.warn("-- closed consumer -- {}", name);
-        });
+        consumers.values().forEach(StringConsumer::close);
     }
 
     @PostMapping("add")

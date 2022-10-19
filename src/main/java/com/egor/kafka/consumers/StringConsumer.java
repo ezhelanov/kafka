@@ -11,16 +11,16 @@ import java.time.Duration;
 import java.util.Properties;
 
 @Slf4j
-@Setter
 public class StringConsumer extends KafkaConsumer<String, String> {
 
     @Getter
+    @Setter
     private String name;
-
-    private boolean enabled;
 
     @Getter
     private Thread thread;
+
+    private boolean enabled;
 
 
     private final Runnable runnable = () -> {
@@ -46,6 +46,8 @@ public class StringConsumer extends KafkaConsumer<String, String> {
         enabled = true;
         thread = new Thread(runnable);
         thread.start();
+
+        log.info("Consumer {} started pulling...", name);
     }
 
     public void stopPulling() {
@@ -54,12 +56,19 @@ public class StringConsumer extends KafkaConsumer<String, String> {
         enabled = false;
         try {
             thread.join();
+
+            log.info("Consumer {} stopped pulling...", name);
         } catch (InterruptedException e) {
             log.error(e.getMessage());
         }
     }
 
-
+    @Override
+    public void close() {
+        stopPulling();
+        super.close();
+        log.warn("Consumer {} closed !", name);
+    }
 
 //    public void seekAllPartitions(long offset) {
 //        for (TopicPartition topicPartition : assignment()) {
