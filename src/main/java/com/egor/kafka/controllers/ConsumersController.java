@@ -84,6 +84,11 @@ public class ConsumersController {
         closeAll();
         consumers.clear();
     }
+    @DeleteMapping("delete")
+    public void delete(@RequestParam String name) {
+        consumers.get(name).close();
+        consumers.remove(name);
+    }
 
 
 }
