@@ -1,46 +1,47 @@
 package com.egor.kafka.consumers;
 
-import com.egor.kafka.services.ConsumerGroupService;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Properties;
 
 @Slf4j
+@Setter
 public class StringConsumer extends KafkaConsumer<String, String> {
 
-    @Autowired
-    private ConsumerGroupService consumerGroupService;
-
+    @Getter
+    private String name;
 
     private boolean enabled;
 
+    @Getter
     private Thread thread;
 
 
     private final Runnable runnable = () -> {
 
         while (enabled) {
-            var messages = new ArrayList<String>();
-
             log.error("Start poll");
-            for (var record : poll(Duration.ofMillis(1000))) {
-                log.warn("partition={}, offset={}, key={}, value={}, timestmap={}", record.partition(), record.offset(), record.key(), record.value(), record.timestamp());
-                messages.add(record.value());
-            }
-            log.error("End poll");
 
-            consumerGroupService.getTotalReadMessages().addAll(messages);
+            ConsumerRecords<String, String> records = poll(Duration.ofMillis(1000));
+
+            for (ConsumerRecord<String, String> record : records) {
+                log.warn("partition={}, offset={}, key={}, value={}, timestmap={}", record.partition(), record.offset(), record.key(), record.value(), record.timestamp());
+            }
+
+            log.error("End poll");
         }
 
     };
 
 
     public void startPulling() {
-        if (thread != null) return;
+        if (thread != null && thread.isAlive()) return;
 
         enabled = true;
         thread = new Thread(runnable);

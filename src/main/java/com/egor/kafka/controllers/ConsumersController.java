@@ -2,9 +2,12 @@ package com.egor.kafka.controllers;
 
 import com.egor.kafka.consumers.StringConsumer;
 import com.egor.kafka.consumers.StringConsumerFactory;
+import com.egor.kafka.dtos.StringConsumerDTO;
+import com.egor.kafka.mappers.StringConsumerMapper;
 import com.egor.kafka.services.ConsumerGroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -23,10 +26,21 @@ public class ConsumersController {
     @Autowired
     private ConsumerGroupService consumerGroupService;
 
+    @Autowired
+    private StringConsumerMapper mapper;
+
 
     @GetMapping
-    public Set<String> getAll(){
-        return consumers.keySet();
+    public Set<StringConsumerDTO> getAll(){
+        consumers.values().forEach(StringConsumer::stopPulling);
+        try {
+            return mapper.map(consumers.values());
+        } finally {
+            consumers.values().stream()
+                    .filter(consumer -> !CollectionUtils.isEmpty(consumer.subscription()))
+                    .filter(consumer -> consumer.getThread() != null)
+                    .forEach(StringConsumer::startPulling);
+        }
     }
 
     @GetMapping("messages")
@@ -40,10 +54,26 @@ public class ConsumersController {
         log.info("Consumer {} started pulling...", name);
     }
 
+    @PostMapping("startAll")
+    public void startPullingAll() {
+        consumers.forEach((name,consumer) -> {
+            consumer.startPulling();
+            log.info("Consumer {} started pulling...", name);
+        });
+    }
+
     @PostMapping("stop")
     public void stopPulling(@RequestParam String name) throws InterruptedException {
         consumers.get(name).stopPulling();
         log.info("Consumer {} stopped pulling...", name);
+    }
+
+    @PostMapping("stopAll")
+    public void stopPullingAll() {
+        consumers.forEach((name,consumer) -> {
+            consumer.stopPulling();
+            log.info("Consumer {} stopped pulling...", name);
+        });
     }
 
     @PostMapping("add")
@@ -52,7 +82,9 @@ public class ConsumersController {
                             @RequestParam(defaultValue = "true") boolean enableAutoCommit,
                             @RequestParam(defaultValue = "latest") String autoOffsetReset,
                             @RequestParam int autoCommitIntervalMs){
-        consumers.put(name, stringConsumerFactory.get(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs));
+        var consumer = stringConsumerFactory.get(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs);
+        consumer.setName(name);
+        consumers.put(name, consumer);
     }
 
     @PatchMapping("subscribe")

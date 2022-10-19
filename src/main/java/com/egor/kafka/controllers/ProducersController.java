@@ -1,10 +1,11 @@
 package com.egor.kafka.controllers;
 
-import com.egor.kafka.producers.StringProducer;
 import com.egor.kafka.properties.ProducerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.Callback;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +18,18 @@ import java.util.Set;
 @RequestMapping("kafka/producers")
 public class ProducersController {
 
-    private final Map<String, StringProducer> producers = new HashMap<>();
+    private final Map<String, KafkaProducer<String, String>> producers = new HashMap<>();
 
-    @Autowired
-    private Callback callback;
+    private final Callback callback = new Callback() {
+        @Override
+        public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+            if (e != null) {
+                log.error("Send error!", e);
+                return;
+            }
+            log.info("topic={}, partition={}, offset={}", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
+        }
+    };
 
 
     @GetMapping
@@ -30,7 +39,7 @@ public class ProducersController {
 
     @PostMapping("add")
     public void addProducer(@RequestParam String name) {
-        producers.put(name, new StringProducer(new ProducerProperties()));
+        producers.put(name, new KafkaProducer<>(new ProducerProperties()));
     }
 
     @PutMapping("close")
