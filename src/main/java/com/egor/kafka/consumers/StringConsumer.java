@@ -17,7 +17,6 @@ public class StringConsumer extends KafkaConsumer<String, String> {
     @Setter
     private String name;
 
-    @Getter
     private Thread thread;
 
     private boolean enabled;
