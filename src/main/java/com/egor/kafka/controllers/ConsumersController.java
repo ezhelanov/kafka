@@ -36,30 +36,43 @@ public class ConsumersController {
 
 
     @PostMapping("start")
-    public void startPulling(@RequestParam String name) {
+    public void start(@RequestParam String name) {
         consumers.get(name).startPulling();
         log.info("Consumer {} started pulling...", name);
     }
-
     @PostMapping("startAll")
-    public void startPullingAll() {
-        consumers.forEach((name,consumer) -> {
+    public void startAll() {
+        consumers.forEach((name, consumer) -> {
             consumer.startPulling();
             log.info("Consumer {} started pulling...", name);
         });
     }
 
     @PostMapping("stop")
-    public void stopPulling(@RequestParam String name) throws InterruptedException {
+    public void stop(@RequestParam String name) {
         consumers.get(name).stopPulling();
         log.info("Consumer {} stopped pulling...", name);
     }
-
     @PostMapping("stopAll")
-    public void stopPullingAll() {
-        consumers.forEach((name,consumer) -> {
+    public void stopAll() {
+        consumers.forEach((name, consumer) -> {
             consumer.stopPulling();
             log.info("Consumer {} stopped pulling...", name);
+        });
+    }
+
+    @PutMapping("close")
+    public void close(@RequestParam String name){
+        var consumer = consumers.get(name);
+        consumer.stopPulling();
+        consumer.close();
+    }
+    @PutMapping("closeAll")
+    public void closeAll() {
+        stopAll();
+        consumers.forEach((name, consumer) -> {
+            consumer.close();
+            log.warn("-- closed consumer -- {}", name);
         });
     }
 
@@ -68,7 +81,7 @@ public class ConsumersController {
                             @RequestParam String groupId,
                             @RequestParam(defaultValue = "true") boolean enableAutoCommit,
                             @RequestParam(defaultValue = "latest") String autoOffsetReset,
-                            @RequestParam int autoCommitIntervalMs){
+                            @RequestParam int autoCommitIntervalMs) {
         var consumer = stringConsumerFactory.get(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs);
         consumer.setName(name);
         consumers.put(name, consumer);
@@ -78,19 +91,6 @@ public class ConsumersController {
     public void subscribe(@RequestParam String name,
                           @RequestParam String topic) {
         consumers.get(name).subscribe(Collections.singleton(topic));
-    }
-
-    @PutMapping("close")
-    public void close(@RequestParam String name){
-        consumers.get(name).close();
-    }
-
-    @PutMapping("closeAll")
-    public void closeAll(){
-        consumers.forEach((name, consumer) -> {
-            consumer.close();
-            log.warn("-- closed consumer -- {}", name);
-        });
     }
 
     @DeleteMapping
