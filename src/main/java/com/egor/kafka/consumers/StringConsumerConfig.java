@@ -1,14 +1,12 @@
-package com.egor.kafka;
+package com.egor.kafka.consumers;
 
-import com.egor.kafka.consumers.StringConsumer;
-import com.egor.kafka.consumers.StringConsumerFactory;
 import com.egor.kafka.properties.ConsumerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
-public class Config {
+public class StringConsumerConfig {
 
     @Bean
     @Scope("prototype")

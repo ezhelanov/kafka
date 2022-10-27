@@ -4,7 +4,6 @@ import com.egor.kafka.consumers.StringConsumer;
 import com.egor.kafka.consumers.StringConsumerFactory;
 import com.egor.kafka.dtos.StringConsumerDTO;
 import com.egor.kafka.mappers.StringConsumerMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@Slf4j
 @RestController
 @RequestMapping("kafka/consumers")
 public class ConsumersController {
@@ -100,6 +98,8 @@ public class ConsumersController {
         consumers.get(name).close();
         consumers.remove(name);
     }
+
+
 
 
 }
