@@ -1,12 +1,6 @@
 package com.egor.kafka.consumers;
 
-public abstract class StringConsumerFactory {
+public interface StringConsumerFactory {
 
-    public abstract StringConsumer get(
-            String groupId,
-            boolean enableAutoCommit,
-            String autoOffsetReset,
-            int autoCommitIntervalMs
-    );
-
+    StringConsumer get(String groupId, boolean enableAutoCommit, String autoOffsetReset, int autoCommitIntervalMs);
 }

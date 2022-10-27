@@ -5,6 +5,7 @@ import com.egor.kafka.consumers.StringConsumerFactory;
 import com.egor.kafka.dtos.StringConsumerDTO;
 import com.egor.kafka.mappers.StringConsumerMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,10 +65,10 @@ public class ConsumersController {
 
     @PostMapping("add")
     public void addConsumer(@RequestParam String name,
-                            @RequestParam String groupId,
+                            @RequestParam(required = false) String groupId,
                             @RequestParam(defaultValue = "true") boolean enableAutoCommit,
                             @RequestParam(defaultValue = "latest") String autoOffsetReset,
-                            @RequestParam int autoCommitIntervalMs) {
+                            @RequestParam(defaultValue = "0") int autoCommitIntervalMs) {
         var consumer = stringConsumerFactory.get(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs);
         consumer.setName(name);
         consumers.put(name, consumer);
@@ -77,6 +78,16 @@ public class ConsumersController {
     public void subscribe(@RequestParam String name,
                           @RequestParam String topic) {
         consumers.get(name).subscribe(Collections.singleton(topic));
+    }
+
+    @PatchMapping("assignAll")
+    public void assignAll(@RequestParam String name,
+                          @RequestParam String topic) {
+        consumers.get(name).assign(Set.of(
+                new TopicPartition(topic, 0),
+                new TopicPartition(topic, 1),
+                new TopicPartition(topic, 2)
+        ));
     }
 
     @DeleteMapping

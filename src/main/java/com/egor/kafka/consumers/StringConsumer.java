@@ -62,6 +62,7 @@ public class StringConsumer extends KafkaConsumer<String, String> {
         }
     }
 
+
     @Override
     public void close() {
         stopPulling();
@@ -69,28 +70,6 @@ public class StringConsumer extends KafkaConsumer<String, String> {
         log.warn("Consumer {} closed !", name);
     }
 
-//    public void seekAllPartitions(long offset) {
-//        for (TopicPartition topicPartition : assignment()) {
-//            seek(topicPartition, offset);
-//        }
-//    }
-//
-//    public void seekOnePartition(int partition, long offset) {
-//        assignment().stream()
-//                .filter(topicPartition -> topicPartition.partition() == partition)
-//                .findFirst()
-//                .ifPresent(topicPartition -> seek(topicPartition, offset));
-//    }
-//
-//    public void assign(String topic, int... partitions) {
-//        assign(
-//                IntStream.of(partitions).mapToObj(partition -> new TopicPartition(topic, partition)).collect(Collectors.toSet())
-//        );
-//    }
 
-
-    public StringConsumer(Properties properties) {
-        super(properties);
-    }
-
+    public StringConsumer(Properties properties) { super(properties); }
 }

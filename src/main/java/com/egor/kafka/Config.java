@@ -12,23 +12,15 @@ public class Config {
 
     @Bean
     @Scope("prototype")
-    public StringConsumer stringConsumer(String groupId,
-                                         boolean enableAutoCommit,
-                                         String autoOffsetReset,
-                                         int autoCommitIntervalMs) {
+    public StringConsumer stringConsumer(String groupId, boolean enableAutoCommit, String autoOffsetReset, int autoCommitIntervalMs) {
+        if (groupId == null) {
+            return new StringConsumer(new ConsumerProperties());
+        }
         return new StringConsumer(new ConsumerProperties(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs));
     }
 
     @Bean
     public StringConsumerFactory stringConsumerFactory() {
-        return new StringConsumerFactory() {
-            @Override
-            public StringConsumer get(String groupId,
-                                      boolean enableAutoCommit,
-                                      String autoOffsetReset,
-                                      int autoCommitIntervalMs) {
-                return stringConsumer(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs);
-            }
-        };
+        return this::stringConsumer;
     }
 }
