@@ -19,24 +19,28 @@ public class StringConsumer extends KafkaConsumer<String, String> {
 
     private Thread thread;
 
-    private boolean enabled;
+    protected boolean enabled;
+
+    protected Runnable runnable;
 
 
-    private final Runnable runnable = () -> {
+    protected void initRunnable() {
+        runnable = () -> {
 
-        while (enabled) {
-            log.error("Start poll");
+            while (enabled) {
+                log.error("Start poll");
 
-            ConsumerRecords<String, String> records = poll(Duration.ofMillis(1000));
+                ConsumerRecords<String, String> records = poll(Duration.ofMillis(1000));
 
-            for (ConsumerRecord<String, String> record : records) {
-                log.warn("partition={}, offset={}, key={}, value={}, timestmap={}", record.partition(), record.offset(), record.key(), record.value(), record.timestamp());
+                for (ConsumerRecord<String, String> record : records) {
+                    log.warn("partition={}, offset={}, key={}, value={}, timestamp={}", record.partition(), record.offset(), record.key(), record.value(), record.timestamp());
+                }
+
+                log.error("End poll");
             }
 
-            log.error("End poll");
-        }
-
-    };
+        };
+    }
 
 
     public void startPulling() {
@@ -71,5 +75,8 @@ public class StringConsumer extends KafkaConsumer<String, String> {
     }
 
 
-    public StringConsumer(Properties properties) { super(properties); }
+    public StringConsumer(Properties properties) {
+        super(properties);
+        initRunnable();
+    }
 }

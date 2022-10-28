@@ -18,7 +18,23 @@ public class StringConsumerConfig {
     }
 
     @Bean
+    @Scope("prototype")
+    public DuplicatesStringConsumer duplicatesStringConsumer() {
+        return new DuplicatesStringConsumer(new ConsumerProperties());
+    }
+
+    @Bean
     public StringConsumerFactory stringConsumerFactory() {
-        return this::stringConsumer;
+        return new StringConsumerFactory() {
+            @Override
+            public DuplicatesStringConsumer get() {
+                return duplicatesStringConsumer();
+            }
+
+            @Override
+            public StringConsumer get(String groupId, boolean enableAutoCommit, String autoOffsetReset, int autoCommitIntervalMs) {
+                return stringConsumer(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs);
+            }
+        };
     }
 }

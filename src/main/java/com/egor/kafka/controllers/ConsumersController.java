@@ -78,6 +78,13 @@ public class ConsumersController {
         consumers.put(name, consumer);
     }
 
+    @PostMapping("addDuplicate")
+    public void addDuplicatesConsumer(@RequestParam String name) {
+        var duplicatesConsumer = stringConsumerFactory.get();
+        duplicatesConsumer.setName(name);
+        consumers.put(name, duplicatesConsumer);
+    }
+
     @PatchMapping("subscribe")
     public void subscribe(@RequestParam String name,
                           @RequestParam String topic) {
@@ -126,6 +133,7 @@ public class ConsumersController {
                      @RequestParam(defaultValue = "0") long offset) {
         consumers.get(name).seek(new TopicPartition(topic, partition), offset);
     }
+
     @PostMapping("seekAll")
     public void seekAll(@RequestParam String name,
                         @RequestParam(defaultValue = "0") long offset) {
