@@ -19,7 +19,9 @@ public class GameGenericSerializer implements Serializer<GenericRecord> {
     public byte[] serialize(String topic, GenericRecord data) {
 
         try {
-            Schema schema = new Schema.Parser().parse(new File("game.avsc"));
+            Schema schema = new Schema.Parser().parse(
+                    getClass().getClassLoader().getResourceAsStream("game.avsc")
+            );
             DatumWriter<GenericRecord> writer = new GenericDatumWriter<>(schema);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(baos, null);

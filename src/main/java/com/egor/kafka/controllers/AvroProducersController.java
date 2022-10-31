@@ -2,6 +2,7 @@ package com.egor.kafka.controllers;
 
 import com.egor.kafka.objects.Game;
 import com.egor.kafka.properties.GameGenericConsumerProperties;
+import com.egor.kafka.properties.GameGenericProducerProperties;
 import com.egor.kafka.properties.GameReflectionProducerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.Schema;
@@ -51,7 +52,7 @@ public class AvroProducersController {
 
     @PostMapping("add/generic")
     public void addProducer2(@RequestParam String name) {
-        generics.put(name, new KafkaProducer<>(new GameGenericConsumerProperties()));
+        generics.put(name, new KafkaProducer<>(new GameGenericProducerProperties()));
     }
 
     @PostMapping("sendAsync/reflection")
@@ -68,7 +69,7 @@ public class AvroProducersController {
                                   @RequestParam int partition,
                                   @RequestBody Game value) throws IOException {
 
-        Schema schema = new Schema.Parser().parse(new File("game.avsc"));
+        Schema schema = new Schema.Parser().parse(getClass().getClassLoader().getResourceAsStream("game.avsc"));
 
         GenericRecord genericRecord = new GenericData.Record(schema);
         genericRecord.put("id", value.getId());

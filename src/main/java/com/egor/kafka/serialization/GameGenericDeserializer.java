@@ -18,7 +18,9 @@ public class GameGenericDeserializer implements Deserializer<GenericRecord> {
     public GenericRecord deserialize(String topic, byte[] data) {
 
         try {
-            Schema schema = new Schema.Parser().parse(new File("game.avsc"));
+            Schema schema = new Schema.Parser().parse(
+                    getClass().getClassLoader().getResourceAsStream("game.avsc")
+            );
             DatumReader<GenericRecord> reader = new GenericDatumReader<>(schema);
             BinaryDecoder decoder = DecoderFactory.get().binaryDecoder(data, null);
             return reader.read(null, decoder);
