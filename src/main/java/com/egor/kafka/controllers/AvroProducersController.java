@@ -1,14 +1,20 @@
 package com.egor.kafka.controllers;
 
 import com.egor.kafka.objects.Game;
+import com.egor.kafka.properties.GameGenericConsumerProperties;
 import com.egor.kafka.properties.GameReflectionProducerProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +24,8 @@ import java.util.Set;
 @RequestMapping("kafka/avro/producers")
 public class AvroProducersController {
 
-    private final Map<String, KafkaProducer<String, Game>> producers = new HashMap<>();
+    private final Map<String, KafkaProducer<String, Game>> reflections = new HashMap<>();
+    private final Map<String, KafkaProducer<String, GenericRecord>> generics = new HashMap<>();
 
     private final Callback callback = new Callback() {
         @Override
@@ -34,31 +41,50 @@ public class AvroProducersController {
 
     @GetMapping
     public Set<String> getAll() {
-        return producers.keySet();
+        return reflections.keySet();
     }
 
-    @PostMapping("add")
+    @PostMapping("add/reflection")
     public void addProducer(@RequestParam String name) {
-        producers.put(name, new KafkaProducer<>(new GameReflectionProducerProperties()));
+        reflections.put(name, new KafkaProducer<>(new GameReflectionProducerProperties()));
     }
 
-    @PostMapping("sendAsync")
+    @PostMapping("add/generic")
+    public void addProducer2(@RequestParam String name) {
+        generics.put(name, new KafkaProducer<>(new GameGenericConsumerProperties()));
+    }
+
+    @PostMapping("sendAsync/reflection")
     public void sendWithCallback(@RequestParam String name,
                                  @RequestParam String topic,
                                  @RequestParam int partition,
                                  @RequestBody Game value) {
-        String key = null;
-        producers.get(name).send(new ProducerRecord<>(topic, partition, key, value), callback);
+        reflections.get(name).send(new ProducerRecord<>(topic, partition, null, value), callback);
     }
 
-    @PutMapping("close")
-    public void close(@RequestParam String name) {
-        producers.get(name).close();
+    @PostMapping("sendAsync/generic")
+    public void sendWithCallback2(@RequestParam String name,
+                                  @RequestParam String topic,
+                                  @RequestParam int partition,
+                                  @RequestBody Game value) throws IOException {
+
+        Schema schema = new Schema.Parser().parse(new File("game.avsc"));
+
+        GenericRecord genericRecord = new GenericData.Record(schema);
+        genericRecord.put("id", value.getId());
+        genericRecord.put("name", value.getName());
+        genericRecord.put("type", value.getType());
+
+        generics.get(name).send(new ProducerRecord<>(topic, partition, null, genericRecord), callback);
     }
 
     @PutMapping("closeAll")
     public void closeAll() {
-        producers.forEach((name, producer) -> {
+        reflections.forEach((name, producer) -> {
+            producer.close();
+            log.warn("-- closed producer -- {}", name);
+        });
+        generics.forEach((name, producer) -> {
             producer.close();
             log.warn("-- closed producer -- {}", name);
         });
@@ -67,7 +93,8 @@ public class AvroProducersController {
     @DeleteMapping
     public void deleteAll() {
         closeAll();
-        producers.clear();
+        reflections.clear();
+        generics.clear();
     }
-    
+
 }
