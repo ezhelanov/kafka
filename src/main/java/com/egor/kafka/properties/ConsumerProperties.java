@@ -1,13 +1,15 @@
 package com.egor.kafka.properties;
 
+import org.apache.kafka.common.serialization.StringDeserializer;
+
 import java.util.Properties;
 
 public class ConsumerProperties extends Properties {
 
     public ConsumerProperties() {
         put("bootstrap.servers", "localhost:9092");
-        put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        put("key.deserializer", StringDeserializer.class.getName());
+        putValueDeserializer();
     }
 
     public ConsumerProperties(String groupId, boolean enableAutoCommit, String autoOffsetReset) {
@@ -20,5 +22,10 @@ public class ConsumerProperties extends Properties {
     public ConsumerProperties(String groupId, boolean enableAutoCommit, String autoOffsetReset, int autoCommitIntervalMs) {
         this(groupId, enableAutoCommit, autoOffsetReset);
         put("auto.commit.interval.ms", autoCommitIntervalMs);
+    }
+
+
+    protected void putValueDeserializer() {
+        put("value.deserializer", StringDeserializer.class.getName());
     }
 }
