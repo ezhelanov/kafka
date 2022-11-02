@@ -47,6 +47,10 @@
             <artifactId>avro</artifactId>
             <version>1.10.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+        </dependency>
         <!-- _____ -->
 
         <!-- Lombok + MapStruct -->
