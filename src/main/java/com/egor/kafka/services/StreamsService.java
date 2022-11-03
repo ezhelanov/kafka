@@ -27,4 +27,20 @@ public class StreamsService {
         log.info("------------");
     }
 
+    public void printCountsStore(KafkaStreams kafkaStreams, String storeName) {
+        if (kafkaStreams.state() != KafkaStreams.State.RUNNING) {
+            log.error("Cannot open store - {}", kafkaStreams.state().name());
+            return;
+        }
+
+        ReadOnlyKeyValueStore<String, Integer> storeView = kafkaStreams.store(
+                StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore())
+        );
+        log.info("---counts---");
+        storeView.all().forEachRemaining(
+                keyValue -> log.info("key - '{}', value - {}", keyValue.key, keyValue.value)
+        );
+        log.info("------------");
+    }
+
 }

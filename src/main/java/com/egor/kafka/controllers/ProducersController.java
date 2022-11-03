@@ -64,8 +64,8 @@ public class ProducersController {
     public void sendWithCallback(@RequestParam String name,
                                  @RequestParam String topic,
                                  @RequestParam int partition,
+                                 @RequestParam(required = false) String key,
                                  @RequestParam String value) {
-        String key = null;
         producers.get(name).send(new ProducerRecord<>(topic, partition, key, value), callback);
     }
 
