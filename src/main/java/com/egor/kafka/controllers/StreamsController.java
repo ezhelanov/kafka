@@ -37,6 +37,10 @@ public class StreamsController {
     public void store(@RequestParam String topic, @RequestParam String groupId, @RequestParam String storeName) {
         map.put("store", streamsUtils.store(topic, groupId, storeName));
     }
+    @PostMapping("store2")
+    public void store2(@RequestParam String topic, @RequestParam String groupId, @RequestParam String storeName) {
+        map.put("store2", streamsUtils.store(topic, groupId, storeName));
+    }
 
 
     @GetMapping("{name}/state")
