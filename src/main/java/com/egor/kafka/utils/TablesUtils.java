@@ -11,6 +11,8 @@ import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.Stores;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalTime;
+
 @Slf4j
 @Component
 public class TablesUtils {
@@ -34,7 +36,12 @@ public class TablesUtils {
         // процессор
         KStream<String, String> processor = tableProcessor.toStream();
         // процессор
-        processor.print(Printed.<String, String>toSysOut().withLabel("Table"));
+        KStream<String, String> processorWithPeek = processor.peek((k,v) -> {
+            LocalTime ldt = LocalTime.now();
+            System.out.println(ldt.getHour() + ":" + ldt.getMinute() + ":" + ldt.getSecond());
+        });
+        // процессор
+        processorWithPeek.print(Printed.<String, String>toSysOut().withLabel("Table"));
 
         Topology topology = streamsBuilder.build();
         log.info(topology.describe().toString());

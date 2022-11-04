@@ -3,16 +3,13 @@ package com.egor.kafka.controllers;
 import com.egor.kafka.mappers.StringStoreMapper;
 import com.egor.kafka.services.StreamsService;
 import com.egor.kafka.utils.TablesUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequestMapping("kafka/tables")
 public class TablesController {
