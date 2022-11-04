@@ -1,9 +1,11 @@
 package com.egor.kafka.controllers;
 
+import com.egor.kafka.mappers.StringStoreMapper;
 import com.egor.kafka.services.StreamsService;
 import com.egor.kafka.utils.TablesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,38 +26,45 @@ public class TablesController {
     @Autowired
     private StreamsService streamsService;
 
+    @Autowired
+    private StringStoreMapper mapper;
+
 
     @PostMapping
-    public void table(@RequestParam String topic,
-                      @RequestParam String groupId,
-                      @RequestParam String storeName,
-                      @RequestParam(defaultValue = "5000") long tableCommitIntervalMs){
-        map.put("table", tablesUtils.table(topic, groupId, storeName, tableCommitIntervalMs));
+    public void add(@RequestParam String name,
+                    @RequestParam String topic,
+                    @RequestParam String groupId,
+                    @RequestParam String storeName,
+                    @RequestParam(defaultValue = "5000") long tableCommitIntervalMs) {
+        map.put(name, tablesUtils.table(topic, groupId, storeName, tableCommitIntervalMs));
     }
 
-
-    @GetMapping("{name}/state")
-    public String getState(@PathVariable String name){
-        return map.get(name).state().name();
-    }
-
-    @PutMapping("{name}/start")
-    public void start(@PathVariable String name) {
-        map.get(name).start();
-    }
-    @PutMapping("{name}/close")
-    public void close(@PathVariable String name) {
-        map.get(name).close();
-    }
-
-    @DeleteMapping("{name}/delete")
-    public void delete(@PathVariable String name) {
+    @DeleteMapping
+    public void delete(@RequestParam String name) {
+        close(name);
         map.remove(name);
     }
 
-    @GetMapping("{name}/store")
-    public void store(@PathVariable String name, @RequestParam String storeName){
-        streamsService.printCountsStore(map.get(name), storeName);
+    @GetMapping("state")
+    public String getState(@RequestParam String name) {
+        return map.get(name).state().name();
     }
+
+    @PutMapping("start")
+    public void start(@RequestParam String name) {
+        map.get(name).start();
+    }
+
+    @PutMapping("close")
+    public void close(@RequestParam String name) {
+        map.get(name).close();
+    }
+
+    @GetMapping("store")
+    public Map<String, String> store(@RequestParam String name,
+                                     @RequestParam String storeName) {
+        return mapper.map(streamsService.getStringStore(map.get(name), storeName));
+    }
+
 
 }
