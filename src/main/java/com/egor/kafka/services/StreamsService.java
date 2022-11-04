@@ -33,14 +33,9 @@ public class StreamsService {
             return null;
         }
 
-/*        ReadOnlyKeyValueStore<String, Integer> storeView =*/return kafkaStreams.store(
+        return kafkaStreams.store(
                 StoreQueryParameters.fromNameAndType(storeName, QueryableStoreTypes.keyValueStore())
         );
-//        log.info("---counts---");
-//        storeView.all().forEachRemaining(
-//                keyValue -> log.info("key - '{}', value - {}", keyValue.key, keyValue.value)
-//        );
-//        log.info("------------");
     }
 
 }
