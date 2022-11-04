@@ -37,8 +37,8 @@ public class TablesUtils {
         KStream<String, String> processor = tableProcessor.toStream();
         // процессор
         KStream<String, String> processorWithPeek = processor.peek((k,v) -> {
-            LocalTime ldt = LocalTime.now();
-            System.out.println(ldt.getHour() + ":" + ldt.getMinute() + ":" + ldt.getSecond());
+            LocalTime lt = LocalTime.now();
+            System.out.println(lt.getHour() + ":" + lt.getMinute() + ":" + lt.getSecond());
         });
         // процессор
         processorWithPeek.print(Printed.<String, String>toSysOut().withLabel("Table"));
