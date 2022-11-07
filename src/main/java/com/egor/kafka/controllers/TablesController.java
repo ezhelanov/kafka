@@ -3,12 +3,15 @@ package com.egor.kafka.controllers;
 import com.egor.kafka.mappers.StringStoreMapper;
 import com.egor.kafka.services.StreamsService;
 import com.egor.kafka.utils.TablesUtils;
+import com.egor.kafka.utils.WindowsUtils;
 import org.apache.kafka.streams.KafkaStreams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("kafka/tables")
@@ -26,7 +29,16 @@ public class TablesController {
     @Autowired
     private StringStoreMapper mapper;
 
+    @Autowired
+    private WindowsUtils windowsUtils;
 
+
+    @GetMapping
+    public Set<String> getAll() {
+        return map.keySet();
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void add(@RequestParam String name,
                     @RequestParam String topic,
@@ -34,6 +46,22 @@ public class TablesController {
                     @RequestParam String storeName,
                     @RequestParam(defaultValue = "5000") long tableCommitIntervalMs) {
         map.put(name, tablesUtils.table(topic, groupId, storeName, tableCommitIntervalMs));
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("addWindow")
+    public void addWindow(@RequestParam String name,
+                          @RequestParam String topic,
+                          @RequestParam String groupId,
+                          @RequestParam(defaultValue = "30000") long tableCommitIntervalMs,
+                          @RequestParam(defaultValue = "5") long windowLengthSec,
+                          @RequestParam(defaultValue = "2") long windowShiftSec,
+                          @RequestParam(defaultValue = "1800") long windowAfterEndSec) {
+        switch (name) {
+            case "session" -> map.put(name, windowsUtils.session(topic, groupId, tableCommitIntervalMs, windowLengthSec, windowAfterEndSec));
+            case "tumble" -> map.put(name, windowsUtils.tumble(topic, groupId, tableCommitIntervalMs, windowLengthSec, windowAfterEndSec));
+            case "hop" -> map.put(name, windowsUtils.hop(topic, groupId, tableCommitIntervalMs, windowLengthSec, windowShiftSec, windowAfterEndSec));
+        }
     }
 
     @DeleteMapping

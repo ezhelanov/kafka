@@ -37,8 +37,9 @@ public class ProducersController {
     }
 
     @PostMapping("add")
-    public void addProducer(@RequestParam String name) {
-        producers.put(name, new KafkaProducer<>(new ProducerProperties()));
+    public void addProducer(@RequestParam String name,
+                            @RequestParam(defaultValue = "0") long lingerMs) {
+        producers.put(name, new KafkaProducer<>(new ProducerProperties(lingerMs)));
     }
 
     @PutMapping("close")

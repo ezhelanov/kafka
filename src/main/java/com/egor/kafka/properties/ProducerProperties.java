@@ -14,6 +14,11 @@ public class ProducerProperties extends Properties {
         put("max.block.ms", "5000");
     }
 
+    public ProducerProperties(long lingerMs) {
+        this();
+        put("linger.ms", String.valueOf(lingerMs));
+    }
+
     protected void putValueSerializer() {
         put("value.serializer", StringSerializer.class.getName());
     }
