@@ -2,6 +2,7 @@ package com.egor.kafka.controllers;
 
 import com.egor.kafka.mappers.StringStoreMapper;
 import com.egor.kafka.services.StreamsService;
+import com.egor.kafka.utils.ProcessorApiUtils;
 import com.egor.kafka.utils.TablesUtils;
 import com.egor.kafka.utils.WindowsUtils;
 import org.apache.kafka.streams.KafkaStreams;
@@ -31,6 +32,9 @@ public class TablesController {
 
     @Autowired
     private WindowsUtils windowsUtils;
+
+    @Autowired
+    private ProcessorApiUtils processorApiUtils;
 
 
     @GetMapping
@@ -72,6 +76,21 @@ public class TablesController {
                           @RequestParam(defaultValue = "30000") long tableCommitIntervalMs) {
         map.put(name, windowsUtils.keyDuplicatesCount(topic, groupId, tableCommitIntervalMs));
     }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("addUpperCase")
+    public void upperCase(@RequestParam String name,
+                          @RequestParam String groupId,
+                          @RequestParam(defaultValue = "games") String stringSourceTopic,
+                          @RequestParam(defaultValue = "games_string") String stringSinkTopic,
+                          @RequestParam(defaultValue = "games_int") String intSinkTopic,
+                          @RequestParam(defaultValue = "uppercase_node") String stringUpperCaseNodeName,
+                          @RequestParam(defaultValue = "string_source_node") String stringSourceNodeName,
+                          @RequestParam(defaultValue = "string_sink_node") String stringSinkNodeName,
+                          @RequestParam(defaultValue = "int_sink_node") String intSinkNodeName) {
+        map.put(name, processorApiUtils.upperCase(groupId, stringSourceTopic, stringSinkTopic, intSinkTopic, stringUpperCaseNodeName, stringSourceNodeName, stringSinkNodeName, intSinkNodeName));
+    }
+
 
     @DeleteMapping
     public void delete(@RequestParam String name) {
