@@ -95,4 +95,24 @@ public class WindowsUtils {
         return new KafkaStreams(topology, new TablesProperties(groupId, tableCommitIntervalMs));
     }
 
+    public KafkaStreams keyDuplicatesCount(String topic,
+                                           String groupId,
+                                           long tableCommitIntervalMs) {
+
+        Serde<String> stringSerde = Serdes.String();
+        StreamsBuilder streamsBuilder = new StreamsBuilder();
+
+        KTable<String, Long> table = streamsBuilder.stream(topic, Consumed.with(stringSerde, stringSerde).withOffsetResetPolicy(Topology.AutoOffsetReset.EARLIEST))
+                .groupBy((key, value) -> key, Grouped.with(stringSerde, stringSerde))
+                .count();
+
+        table.toStream()
+                .filter((key, keyCount) -> keyCount > 1)
+                .foreach((key, keyCount) -> System.out.println("key - " + key + ", keyCount - " + keyCount));
+
+        Topology topology = streamsBuilder.build();
+        System.out.println(topology.describe().toString());
+
+        return new KafkaStreams(topology, new TablesProperties(groupId, tableCommitIntervalMs));
+    }
 }

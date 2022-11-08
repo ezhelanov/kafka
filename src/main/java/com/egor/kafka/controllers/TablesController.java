@@ -64,6 +64,15 @@ public class TablesController {
         }
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("addKeyDuplicatesCount")
+    public void addWindow(@RequestParam String name,
+                          @RequestParam String topic,
+                          @RequestParam String groupId,
+                          @RequestParam(defaultValue = "30000") long tableCommitIntervalMs) {
+        map.put(name, windowsUtils.keyDuplicatesCount(topic, groupId, tableCommitIntervalMs));
+    }
+
     @DeleteMapping
     public void delete(@RequestParam String name) {
         close(name);
