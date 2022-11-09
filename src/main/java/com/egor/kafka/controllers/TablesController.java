@@ -1,6 +1,6 @@
 package com.egor.kafka.controllers;
 
-import com.egor.kafka.mappers.StringStoreMapper;
+import com.egor.kafka.mappers.StoreMapper;
 import com.egor.kafka.services.StreamsService;
 import com.egor.kafka.utils.ProcessorApiUtils;
 import com.egor.kafka.utils.TablesUtils;
@@ -28,7 +28,7 @@ public class TablesController {
     private StreamsService streamsService;
 
     @Autowired
-    private StringStoreMapper mapper;
+    private StoreMapper storeMapper;
 
     @Autowired
     private WindowsUtils windowsUtils;
@@ -140,9 +140,9 @@ public class TablesController {
     }
 
     @GetMapping("store")
-    public Map<String, String> store(@RequestParam String name,
+    public Map<String, Object> store(@RequestParam String name,
                                      @RequestParam String storeName) {
-        return mapper.map(streamsService.getStringStore(map.get(name), storeName));
+        return storeMapper.map(streamsService.getStore(map.get(name), storeName));
     }
 
 

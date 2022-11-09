@@ -27,7 +27,7 @@ public class StreamsService {
         log.info("------------");
     }
 
-    public ReadOnlyKeyValueStore<String, String> getStringStore(KafkaStreams kafkaStreams, String storeName) {
+    public ReadOnlyKeyValueStore<String, Object> getStore(KafkaStreams kafkaStreams, String storeName) {
         if (kafkaStreams.state() != KafkaStreams.State.RUNNING) {
             log.error("Cannot open store - {}", kafkaStreams.state().name());
             return null;

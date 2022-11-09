@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mapper
-public interface StringStoreMapper {
+public interface StoreMapper {
 
-    default Map<String, String> map(ReadOnlyKeyValueStore<String, String> storeView) {
-        var map = new HashMap<String, String>();
+    default Map<String, Object> map(ReadOnlyKeyValueStore<String, Object> storeView) {
+        var map = new HashMap<String, Object>();
         storeView.all().forEachRemaining(kv -> map.put(kv.key, kv.value));
         return map;
     }
