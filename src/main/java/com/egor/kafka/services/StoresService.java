@@ -11,22 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class StoresService {
 
-    public void printCountsStore(KafkaStreams kafkaStreams) {
-        if (kafkaStreams.state() != KafkaStreams.State.RUNNING) {
-            log.error("Cannot open store - {}", kafkaStreams.state().name());
-            return;
-        }
-
-        ReadOnlyKeyValueStore<String, Integer> storeView = kafkaStreams.store(
-                StoreQueryParameters.fromNameAndType("counts", QueryableStoreTypes.keyValueStore())
-        );
-        log.info("---counts---");
-        storeView.all().forEachRemaining(
-                keyValue -> log.info("key - '{}', value - {}", keyValue.key, keyValue.value)
-        );
-        log.info("------------");
-    }
-
     public ReadOnlyKeyValueStore<String, Object> getStore(KafkaStreams kafkaStreams, String storeName) {
         if (kafkaStreams.state() != KafkaStreams.State.RUNNING) {
             log.error("Cannot open store - {}", kafkaStreams.state().name());

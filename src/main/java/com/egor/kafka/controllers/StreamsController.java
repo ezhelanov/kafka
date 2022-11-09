@@ -1,5 +1,6 @@
 package com.egor.kafka.controllers;
 
+import com.egor.kafka.mappers.StoreMapper;
 import com.egor.kafka.services.StoresService;
 import com.egor.kafka.utils.StreamsUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -24,19 +25,25 @@ public class StreamsController {
     @Autowired
     private StreamsUtils streamsUtils;
 
+    @Autowired
+    private StoreMapper storeMapper;
+
 
     @PostMapping("simple")
     public void simple(@RequestParam String topic, @RequestParam String groupId) {
         map.put("simple", streamsUtils.simple(topic, groupId));
     }
+
     @PostMapping("predicate")
     public void predicate(@RequestParam String topic, @RequestParam String outTopic, @RequestParam String groupId) {
         map.put("predicate", streamsUtils.predicate(topic, outTopic, groupId));
     }
+
     @PostMapping("store")
     public void store(@RequestParam String topic, @RequestParam String groupId, @RequestParam String storeName) {
         map.put("store", streamsUtils.store(topic, groupId, storeName));
     }
+
     @PostMapping("store2")
     public void store2(@RequestParam String topic, @RequestParam String groupId, @RequestParam String storeName) {
         map.put("store2", streamsUtils.store(topic, groupId, storeName));
@@ -44,7 +51,7 @@ public class StreamsController {
 
 
     @GetMapping("{name}/state")
-    public String getState(@PathVariable String name){
+    public String getState(@PathVariable String name) {
         return map.get(name).state().name();
     }
 
@@ -52,6 +59,7 @@ public class StreamsController {
     public void start(@PathVariable String name) {
         map.get(name).start();
     }
+
     @PutMapping("{name}/close")
     public void close(@PathVariable String name) {
         map.get(name).close();
@@ -63,8 +71,9 @@ public class StreamsController {
     }
 
     @GetMapping("store")
-    public void store(){
-        storesService.printCountsStore(map.get("store"));
+    public Map<String, Object> store(@RequestParam(defaultValue = "store") String name,
+                                     @RequestParam(defaultValue = "counts") String storeName) {
+        return storeMapper.map(storesService.getStore(map.get(name), storeName));
     }
 
 }
