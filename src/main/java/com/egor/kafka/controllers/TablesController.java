@@ -91,6 +91,19 @@ public class TablesController {
         map.put(name, processorApiUtils.upperCase(groupId, stringSourceTopic, stringSinkTopic, intSinkTopic, stringUpperCaseNodeName, stringSourceNodeName, stringSinkNodeName, intSinkNodeName));
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("addTrafficPunctuator")
+    public void trafficPunctuator(@RequestParam String name,
+                                  @RequestParam String groupId,
+                                  @RequestParam(defaultValue = "games") String sourceTopic,
+                                  @RequestParam(defaultValue = "source_node") String sourceNodeName,
+                                  @RequestParam(defaultValue = "traffic_store") String storeName,
+                                  @RequestParam(defaultValue = "traffic_topic") String trafficSinkTopic,
+                                  @RequestParam(defaultValue = "traffic_sink_node") String trafficSinkNodeName,
+                                  @RequestParam(defaultValue = "traffic_node") String trafficNodeName) {
+        map.put(name, processorApiUtils.trafficPunctuator(groupId, sourceTopic, storeName, trafficSinkTopic, trafficSinkNodeName, trafficNodeName, sourceNodeName));
+    }
+
 
     @DeleteMapping
     public void delete(@RequestParam String name) {

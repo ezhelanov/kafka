@@ -1,11 +1,13 @@
 package com.egor.kafka.utils;
 
+import com.egor.kafka.processors.TrafficProcessor;
 import com.egor.kafka.processors.UpperCaseProcessor;
 import com.egor.kafka.properties.ProcessorApiProperties;
 import org.apache.kafka.common.serialization.*;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.processor.UsePartitionTimeOnInvalidTimestamp;
+import org.apache.kafka.streams.state.Stores;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -48,6 +50,47 @@ public class ProcessorApiUtils {
                 stringSerializer,
                 stringSerializer,
                 stringUpperCaseNodeName
+        );
+
+        System.out.println(topology.describe().toString());
+
+        return new KafkaStreams(topology, new ProcessorApiProperties(groupId));
+    }
+
+    public KafkaStreams trafficPunctuator(String groupId,
+                                          String sourceTopic,
+                                          String storeName,
+                                          String trafficSinkTopic,
+                                          String trafficSinkNodeName,
+                                          String trafficNodeName,
+                                          String sourceNodeName) {
+
+        Deserializer<String> stringDeserializer = new StringDeserializer();
+        Serializer<String> stringSerializer = new StringSerializer();
+
+        Topology topology = new Topology();
+
+        topology.addSource(
+                Topology.AutoOffsetReset.LATEST,
+                sourceNodeName,
+                stringDeserializer,
+                stringDeserializer,
+                sourceTopic
+        ).addProcessor(
+                trafficNodeName,
+                () -> new TrafficProcessor(storeName),
+                sourceNodeName
+        ).addStateStore(
+                Stores.keyValueStoreBuilder(
+                        Stores.inMemoryKeyValueStore(storeName), Serdes.String(), Serdes.Integer()
+                ),
+                trafficNodeName
+        ).addSink(
+                trafficSinkNodeName,
+                trafficSinkTopic,
+                stringSerializer,
+                stringSerializer,
+                trafficNodeName
         );
 
         System.out.println(topology.describe().toString());
