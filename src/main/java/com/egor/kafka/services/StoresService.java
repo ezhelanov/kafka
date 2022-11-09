@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class StreamsService {
+public class StoresService {
 
     public void printCountsStore(KafkaStreams kafkaStreams) {
         if (kafkaStreams.state() != KafkaStreams.State.RUNNING) {

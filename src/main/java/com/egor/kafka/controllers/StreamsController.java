@@ -1,6 +1,6 @@
 package com.egor.kafka.controllers;
 
-import com.egor.kafka.services.StreamsService;
+import com.egor.kafka.services.StoresService;
 import com.egor.kafka.utils.StreamsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
@@ -19,7 +19,7 @@ public class StreamsController {
 
 
     @Autowired
-    private StreamsService streamsService;
+    private StoresService storesService;
 
     @Autowired
     private StreamsUtils streamsUtils;
@@ -64,7 +64,7 @@ public class StreamsController {
 
     @GetMapping("store")
     public void store(){
-        streamsService.printCountsStore(map.get("store"));
+        storesService.printCountsStore(map.get("store"));
     }
 
 }
