@@ -1,5 +1,6 @@
 package com.egor.kafka.utils;
 
+import com.egor.kafka.processors.MultiTopicTrafficProcessor;
 import com.egor.kafka.processors.TrafficProcessor;
 import com.egor.kafka.processors.UpperCaseProcessor;
 import com.egor.kafka.properties.ProcessorApiProperties;
@@ -90,6 +91,47 @@ public class ProcessorApiUtils {
                 trafficSinkTopic,
                 stringSerializer,
                 stringSerializer,
+                trafficNodeName
+        );
+
+        System.out.println(topology.describe().toString());
+
+        return new KafkaStreams(topology, new ProcessorApiProperties(groupId));
+    }
+
+    public KafkaStreams multiTopics(String groupId,
+                                    String sourceNodeName,
+                                    String storeName,
+                                    String trafficNodeName,
+                                    String trafficSinkNodeName,
+                                    String trafficSinkTopic,
+                                    String... sourceTopics) {
+
+        Deserializer<String> stringDeserializer = new StringDeserializer();
+        Serializer<String> stringSerializer = new StringSerializer();
+
+        Topology topology = new Topology();
+
+        topology.addSource(
+                Topology.AutoOffsetReset.LATEST,
+                sourceNodeName,
+                stringDeserializer,
+                stringDeserializer,
+                sourceTopics
+        ).addProcessor(
+                trafficNodeName,
+                () -> new MultiTopicTrafficProcessor(storeName, sourceTopics),
+                sourceNodeName
+        ).addSink(
+                trafficSinkNodeName,
+                trafficSinkTopic,
+                stringSerializer,
+                stringSerializer,
+                trafficNodeName
+        ).addStateStore(
+                Stores.keyValueStoreBuilder(
+                        Stores.inMemoryKeyValueStore(storeName), Serdes.String(), Serdes.Integer()
+                ),
                 trafficNodeName
         );
 

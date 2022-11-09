@@ -104,6 +104,19 @@ public class TablesController {
         map.put(name, processorApiUtils.trafficPunctuator(groupId, sourceTopic, storeName, trafficSinkTopic, trafficSinkNodeName, trafficNodeName, sourceNodeName));
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("addMulti")
+    public void multiTopics(@RequestParam String name,
+                                    @RequestParam String groupId,
+                                    @RequestParam(defaultValue = "source_node") String sourceNodeName,
+                                    @RequestParam(defaultValue = "traffic_store") String storeName,
+                                    @RequestParam(defaultValue = "traffic_node") String trafficNodeName,
+                                    @RequestParam(defaultValue = "traffic_sink_node") String trafficSinkNodeName,
+                                    @RequestParam(defaultValue = "traffic_topic") String trafficSinkTopic,
+                                    @RequestParam String sourceTopics) {
+        map.put(name, processorApiUtils.multiTopics(groupId, sourceNodeName, storeName, trafficNodeName, trafficSinkNodeName, trafficSinkTopic, sourceTopics.split(",")));
+    }
+
 
     @DeleteMapping
     public void delete(@RequestParam String name) {
