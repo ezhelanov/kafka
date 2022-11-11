@@ -38,8 +38,10 @@ public class ProducersController {
 
     @PostMapping("add")
     public void addProducer(@RequestParam String name,
-                            @RequestParam(defaultValue = "0") long lingerMs) {
-        producers.put(name, new KafkaProducer<>(new ProducerProperties(lingerMs)));
+                            @RequestParam(defaultValue = "0") long lingerMs,
+                            @RequestParam(defaultValue = "1") String acks,
+                            @RequestParam(defaultValue = "16384") long batchSizeBytes) {
+        producers.put(name, new KafkaProducer<>(new ProducerProperties(lingerMs, acks, batchSizeBytes)));
     }
 
     @PutMapping("close")

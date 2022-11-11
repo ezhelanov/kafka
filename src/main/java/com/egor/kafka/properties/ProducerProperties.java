@@ -4,22 +4,26 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 
+import static org.apache.kafka.clients.producer.ProducerConfig.*;
+
 public class ProducerProperties extends Properties {
 
     public ProducerProperties() {
-        put("bootstrap.servers", "localhost:9092");
-        put("key.serializer", StringSerializer.class.getName());
+        put(BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        put(KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         putValueSerializer();
-        put("acks", "1");
-        put("max.block.ms", "5000");
+        put(ACKS_CONFIG, "1");
+        put(MAX_BLOCK_MS_CONFIG, "5000");
     }
 
-    public ProducerProperties(long lingerMs) {
+    public ProducerProperties(long lingerMs, String acks, long batchSizeBytes) {
         this();
-        put("linger.ms", String.valueOf(lingerMs));
+        put(LINGER_MS_CONFIG, String.valueOf(lingerMs));
+        put(ACKS_CONFIG, acks);
+        put(BATCH_SIZE_CONFIG, String.valueOf(batchSizeBytes));
     }
 
     protected void putValueSerializer() {
-        put("value.serializer", StringSerializer.class.getName());
+        put(VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     }
 }
