@@ -1,21 +1,19 @@
 package com.egor.kafka.controllers;
 
 import com.egor.kafka.consumers.StringConsumer;
-import com.egor.kafka.consumers.StringConsumerFactory;
 import com.egor.kafka.dtos.StringConsumerDTO;
 import com.egor.kafka.mappers.StringConsumerMapper;
-import lombok.extern.slf4j.Slf4j;
+import com.egor.kafka.services.StringConsumerService;
+import com.egor.kafka.utils.StringConsumerUtils;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@Slf4j
 @RestController
 @RequestMapping("kafka/consumers")
 public class ConsumersController {
@@ -24,7 +22,10 @@ public class ConsumersController {
 
 
     @Autowired
-    private StringConsumerFactory stringConsumerFactory;
+    private StringConsumerUtils stringConsumerUtils;
+
+    @Autowired
+    private StringConsumerService stringConsumerService;
 
     @Autowired
     private StringConsumerMapper mapper;
@@ -72,17 +73,15 @@ public class ConsumersController {
                             @RequestParam(required = false) String groupId,
                             @RequestParam(defaultValue = "true") boolean enableAutoCommit,
                             @RequestParam(defaultValue = "latest") String autoOffsetReset,
-                            @RequestParam(defaultValue = "0") int autoCommitIntervalMs) {
-        var consumer = stringConsumerFactory.get(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs);
-        consumer.setName(name);
-        consumers.put(name, consumer);
+                            @RequestParam(defaultValue = "5000") int autoCommitIntervalMs,
+                            @RequestParam(defaultValue = "500") int maxPollRecords,
+                            @RequestParam(defaultValue = "1048576") int maxPartitionFetchBytes) {
+        consumers.put(name, stringConsumerUtils.get(name, groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs, maxPollRecords, maxPartitionFetchBytes));
     }
 
     @PostMapping("addDuplicate")
     public void addDuplicatesConsumer(@RequestParam String name) {
-        var duplicatesConsumer = stringConsumerFactory.get();
-        duplicatesConsumer.setName(name);
-        consumers.put(name, duplicatesConsumer);
+        consumers.put(name, stringConsumerUtils.getDuplicates(name));
     }
 
     @PatchMapping("subscribe")
@@ -93,12 +92,9 @@ public class ConsumersController {
 
     @PatchMapping("assignAll")
     public void assignAll(@RequestParam String name,
-                          @RequestParam String topic) {
-        consumers.get(name).assign(Set.of(
-                new TopicPartition(topic, 0),
-                new TopicPartition(topic, 1),
-                new TopicPartition(topic, 2)
-        ));
+                          @RequestParam String topic,
+                          @RequestParam(defaultValue = "3") int partitions) {
+        stringConsumerService.assignAll(consumers.get(name), topic, partitions);
     }
 
     @DeleteMapping
@@ -116,14 +112,14 @@ public class ConsumersController {
     @PostMapping("singlePoll")
     public void singlePoll(@RequestParam String name,
                            @RequestParam(defaultValue = "1000") long duration) {
-        log.error("Start poll");
+        stringConsumerService.singlePoll(consumers.get(name), duration);
+    }
 
-        var records = consumers.get(name).poll(Duration.ofMillis(duration));
-        for (var record : records) {
-            log.warn("partition={}, offset={}, key={}, value={}, timestamp={}", record.partition(), record.offset(), record.key(), record.value(), record.timestamp());
-        }
-
-        log.error("End poll");
+    @PostMapping("multiplePolls")
+    public void multiplePolls(@RequestParam String name,
+                              @RequestParam(defaultValue = "1000") long duration,
+                              @RequestParam int howMuch) {
+        for (int i = 0; i < howMuch; i++) singlePoll(name, duration);
     }
 
     @PostMapping("seek")
