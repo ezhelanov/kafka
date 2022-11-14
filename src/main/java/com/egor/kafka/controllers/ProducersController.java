@@ -8,6 +8,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -70,6 +71,17 @@ public class ProducersController {
                                  @RequestParam(required = false) String key,
                                  @RequestParam String value) {
         producers.get(name).send(new ProducerRecord<>(topic, partition, key, value), callback);
+    }
+
+    @PostMapping("sendBatch")
+    public void sendBatch(@RequestParam String name,
+                          @RequestParam String topic,
+                          @RequestParam int howMuch) {
+        var producer = producers.get(name);
+        String batchName = "BatchName" + new Date().getTime();
+        for (int i = 0; i < howMuch; i++) {
+            producer.send(new ProducerRecord<>(topic, 0, null, batchName + i), callback);
+        }
     }
 
 }
