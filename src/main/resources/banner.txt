@@ -1,0 +1,7 @@
+  _               __   _
+ | | __   __ _   / _| | | __   __ _
+ | |/ /  / _` | | |_  | |/ /  / _` |
+ |   <  | (_| | |  _| |   <  | (_| |
+ |_|\_\  \__,_| |_|   |_|\_\  \__,_|
+
+Powered by ${AnsiColor.GREEN}Spring Boot ${spring-boot.version}${AnsiColor.BLACK}
