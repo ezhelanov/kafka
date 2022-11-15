@@ -1,0 +1,17 @@
+{
+  "name": "file-source-test-transform",
+  "config": {
+    "connector.class": "FileStreamSource",
+    "file": "/tmp/file.txt",
+    "topic": "file-source2",
+
+    "transforms": "MyTransform, EgorTransform",
+
+    "transforms.MyTransform.type": "org.apache.kafka.connect.transforms.HoistField$Value",
+    "transforms.MyTransform.field": "value",
+
+    "transforms.EgorTransform.type": "org.apache.kafka.connect.transforms.InsertField$Value",
+    "transforms.EgorTransform.static.field": "egorDataSource",
+    "transforms.EgorTransform.static.value": "textFile"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema":{
+    "type":"struct",
+    "fields":[
+      {
+        "type":"string",
+        "optional":false,
+        "field":"value"
+      },
+      {
+        "type":"string",
+        "optional":true,
+        "field":"egorDataSource"
+      }
+    ],
+    "optional":false
+  },
+  "payload":{
+    "value": "DOOM ETERNAL",
+    "egorDataSource": "textFile"
+  }
+}

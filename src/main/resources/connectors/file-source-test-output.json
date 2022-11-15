@@ -1,0 +1,7 @@
+{
+  "schema": {
+    "type": "string",
+    "optional": false
+  },
+  "payload": "Hello, Kafka Connect"
+}

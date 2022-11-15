@@ -1,0 +1,8 @@
+{
+  "name": "file-source-test",
+  "config": {
+    "connector.class": "FileStreamSource",
+    "file": "/tmp/file.txt",
+    "topic": "file-source2"
+  }
+}
