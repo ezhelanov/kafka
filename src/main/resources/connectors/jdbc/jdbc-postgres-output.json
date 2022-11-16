@@ -1,0 +1,45 @@
+{
+  "schema":{
+    "type":"struct",
+    "fields":[
+      {
+        "type":"int32",
+        "optional":false,
+        "field":"id"
+      },
+      {
+        "type":"int64",
+        "optional":true,
+        "name":"org.apache.kafka.connect.data.Timestamp",
+        "version":1,
+        "field":"creation_time"
+      },
+      {
+        "type":"int64",
+        "optional":true,
+        "name":"org.apache.kafka.connect.data.Timestamp",
+        "version":1,
+        "field":"modified_time"
+      },
+      {
+        "type":"string",
+        "optional":true,
+        "field":"code"
+      },
+      {
+        "type":"double",
+        "optional":false,
+        "field":"price"
+      }
+    ],
+    "optional":false,
+    "name":"products"
+  },
+  "payload": {
+    "id":1639,
+    "creation_time":1666614475789,
+    "modified_time":1666614475789,
+    "code":"VEGETABLE-CABBAGE",
+    "price":50.0
+  }
+}

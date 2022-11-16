@@ -1,0 +1,14 @@
+{
+  "name": "jdbc_postgres_connector",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:postgresql://localhost/egor_database",
+    "connection.user": "egorka",
+    "connection.password": "egorka",
+    "topic.prefix": "psql-egor-inc-",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "validate.non.null": "false",
+    "table.whitelist": "products"
+  }
+}
