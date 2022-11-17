@@ -3,6 +3,7 @@ package com.egor.kafka.controllers;
 import com.egor.kafka.objects.Game;
 import com.egor.kafka.properties.GameGenericConsumerProperties;
 import com.egor.kafka.properties.GameReflectionConsumerProperties;
+import com.egor.kafka.properties.SchemaRegistryConsumerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -22,6 +23,15 @@ public class AvroConsumersController {
     private final Map<String, KafkaConsumer<String, Game>> consumers = new HashMap<>();
     private final Map<String, KafkaConsumer<String, GenericRecord>> consumersGeneric = new HashMap<>();
 
+    @GetMapping("reflections")
+    public Set<String> getAll() {
+        return consumers.keySet();
+    }
+
+    @GetMapping("generics")
+    public Set<String> getAllGenerics() {
+        return consumersGeneric.keySet();
+    }
 
     @PostMapping("add")
     public void addConsumer(@RequestParam String name,
@@ -47,6 +57,19 @@ public class AvroConsumersController {
             return;
         }
         consumersGeneric.put(name, new KafkaConsumer<>(new GameGenericConsumerProperties(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs)));
+    }
+
+    @PostMapping("addGeneric2")
+    public void addGeneric2(@RequestParam String name,
+                            @RequestParam(required = false) String groupId,
+                            @RequestParam(defaultValue = "true") boolean enableAutoCommit,
+                            @RequestParam(defaultValue = "latest") String autoOffsetReset,
+                            @RequestParam(defaultValue = "0") int autoCommitIntervalMs) {
+        if (groupId == null) {
+            consumersGeneric.put(name, new KafkaConsumer<>(new SchemaRegistryConsumerProperties()));
+            return;
+        }
+        consumersGeneric.put(name, new KafkaConsumer<>(new SchemaRegistryConsumerProperties(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs)));
     }
 
 

@@ -4,6 +4,7 @@ import com.egor.kafka.objects.Game;
 import com.egor.kafka.properties.GameGenericConsumerProperties;
 import com.egor.kafka.properties.GameGenericProducerProperties;
 import com.egor.kafka.properties.GameReflectionProducerProperties;
+import com.egor.kafka.properties.SchemaRegistryProducerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
@@ -40,9 +41,14 @@ public class AvroProducersController {
     };
 
 
-    @GetMapping
+    @GetMapping("reflections")
     public Set<String> getAll() {
         return reflections.keySet();
+    }
+
+    @GetMapping("generics")
+    public Set<String> getAllGenerics() {
+        return generics.keySet();
     }
 
     @PostMapping("add/reflection")
@@ -51,8 +57,12 @@ public class AvroProducersController {
     }
 
     @PostMapping("add/generic")
-    public void addProducer2(@RequestParam String name) {
-        generics.put(name, new KafkaProducer<>(new GameGenericProducerProperties()));
+    public void addProducer2(@RequestParam String name,
+                             @RequestParam(defaultValue = "false") boolean isWithSchemaRegistry) {
+        if (isWithSchemaRegistry)
+            generics.put(name, new KafkaProducer<>(new SchemaRegistryProducerProperties()));
+        else
+            generics.put(name, new KafkaProducer<>(new GameGenericProducerProperties()));
     }
 
     @PostMapping("sendAsync/reflection")
@@ -67,14 +77,20 @@ public class AvroProducersController {
     public void sendWithCallback2(@RequestParam String name,
                                   @RequestParam String topic,
                                   @RequestParam int partition,
+                                  @RequestParam(defaultValue = "game.avsc") String schemaName,
                                   @RequestBody Game value) throws IOException {
 
-        Schema schema = new Schema.Parser().parse(getClass().getClassLoader().getResourceAsStream("game.avsc"));
+        Schema schema = new Schema.Parser().parse(getClass().getClassLoader().getResourceAsStream(schemaName));
 
         GenericRecord genericRecord = new GenericData.Record(schema);
         genericRecord.put("id", value.getId());
         genericRecord.put("name", value.getName());
-        genericRecord.put("type", value.getType());
+        if (value.getType() != null) {
+            genericRecord.put("type", value.getType());
+        }
+        if (value.getCompany() != null) {
+            genericRecord.put("company", value.getCompany());
+        }
 
         generics.get(name).send(new ProducerRecord<>(topic, partition, null, genericRecord), callback);
     }

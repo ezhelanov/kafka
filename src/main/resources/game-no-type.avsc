@@ -1,0 +1,16 @@
+{
+  "namespace": "game.avro",
+  "type": "record",
+  "name": "gameRecords",
+  "doc": "Game Records",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    }
+  ]
+}
