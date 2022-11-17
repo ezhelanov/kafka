@@ -1,0 +1,9 @@
+{
+  "name": "egor-sink-connector",
+  "config": {
+    "connector.class": "EgorSinkConnector",
+    "topics": "egor-topic",
+    "file": "/tmp/monitor.txt",
+    "tasks.max": 2
+  }
+}

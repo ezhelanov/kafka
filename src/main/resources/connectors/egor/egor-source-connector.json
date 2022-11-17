@@ -1,5 +1,5 @@
 {
-  "name": "egor-connector",
+  "name": "egor-source-connector",
   "config": {
     "connector.class": "EgorSourceConnector",
     "tasks.max": 1

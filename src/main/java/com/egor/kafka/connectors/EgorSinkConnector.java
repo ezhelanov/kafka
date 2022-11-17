@@ -17,7 +17,10 @@ public class EgorSinkConnector extends SinkConnector {
     public static final String NAME_CONFIG = "name";
 
     private static final ConfigDef CONFIG_DEF = new ConfigDef()
-            .define(FILE_CONFIG, ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, "Destination filename");
+            .define(FILE_CONFIG,
+                    ConfigDef.Type.STRING,
+                    ConfigDef.Importance.HIGH,
+                    "Destination filename");
 
 
     private String fileName;
