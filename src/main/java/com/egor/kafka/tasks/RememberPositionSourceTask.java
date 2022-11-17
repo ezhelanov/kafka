@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class RememberPositionSourceTask extends SourceTask {
 
-    private int count;
+    private long count;
 
     @Override
     public void start(Map<String, String> props) {
@@ -23,7 +23,7 @@ public class RememberPositionSourceTask extends SourceTask {
         if (offsets != null) {
             Object lastOffset = offsets.get("position");
             if (lastOffset != null) {
-                count = (int) lastOffset;
+                count = (long) lastOffset;
             }
         }
     }
