@@ -1,10 +1,10 @@
 package com.egor.kafka.controllers;
 
 import com.egor.kafka.objects.Game;
-import com.egor.kafka.properties.GameGenericConsumerProperties;
 import com.egor.kafka.properties.GameGenericProducerProperties;
 import com.egor.kafka.properties.GameReflectionProducerProperties;
 import com.egor.kafka.properties.SchemaRegistryProducerProperties;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
@@ -15,7 +15,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,7 +76,7 @@ public class AvroProducersController {
     public void sendWithCallback2(@RequestParam String name,
                                   @RequestParam String topic,
                                   @RequestParam int partition,
-                                  @RequestParam(defaultValue = "game.avsc") String schemaName,
+                                  @ApiParam(value = "Avro Schema file name") @RequestParam(defaultValue = "game.avsc") String schemaName,
                                   @RequestBody Game value) throws IOException {
 
         Schema schema = new Schema.Parser().parse(getClass().getClassLoader().getResourceAsStream(schemaName));

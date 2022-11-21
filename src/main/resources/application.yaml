@@ -10,3 +10,7 @@ logging:
               Metrics: off
             utils:
               AppInfoParser: off
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher

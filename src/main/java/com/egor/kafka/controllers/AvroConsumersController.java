@@ -4,6 +4,7 @@ import com.egor.kafka.objects.Game;
 import com.egor.kafka.properties.GameGenericConsumerProperties;
 import com.egor.kafka.properties.GameReflectionConsumerProperties;
 import com.egor.kafka.properties.SchemaRegistryConsumerProperties;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -59,6 +60,7 @@ public class AvroConsumersController {
         consumersGeneric.put(name, new KafkaConsumer<>(new GameGenericConsumerProperties(groupId, enableAutoCommit, autoOffsetReset, autoCommitIntervalMs)));
     }
 
+    @ApiOperation(value = "Create consumer with SchemaRegistry")
     @PostMapping("addGeneric2")
     public void addGeneric2(@RequestParam String name,
                             @RequestParam(required = false) String groupId,
