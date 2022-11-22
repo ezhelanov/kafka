@@ -17,7 +17,7 @@ import org.springframework.messaging.MessageHandler;
 
 import java.io.File;
 
-@Profile("direct")
+@Profile("file-integration")
 @Configuration
 @EnableIntegration
 public class FileIntegrationDirectConfig {
@@ -25,7 +25,7 @@ public class FileIntegrationDirectConfig {
     @Bean
     @InboundChannelAdapter(
             value = "fileChannel",
-            poller = @Poller(fixedDelay = "5000")
+            poller = @Poller(fixedDelay = "30000")
     )
     public FileReadingMessageSource fileReadingMessageSource() {
         var sourceReader = new FileReadingMessageSource();

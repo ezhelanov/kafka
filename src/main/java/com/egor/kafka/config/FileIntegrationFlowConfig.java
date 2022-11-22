@@ -2,6 +2,7 @@ package com.egor.kafka.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.core.MessageSource;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -16,6 +17,7 @@ import org.springframework.messaging.MessageHandler;
 import java.io.File;
 import java.time.Duration;
 
+@Profile("file-integration-flow")
 @Configuration
 @EnableIntegration
 public class FileIntegrationFlowConfig {
