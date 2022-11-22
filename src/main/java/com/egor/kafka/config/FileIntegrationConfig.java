@@ -20,7 +20,7 @@ import java.io.File;
 @Profile("file-integration")
 @Configuration
 @EnableIntegration
-public class FileIntegrationDirectConfig {
+public class FileIntegrationConfig {
 
     @Bean
     @InboundChannelAdapter(
