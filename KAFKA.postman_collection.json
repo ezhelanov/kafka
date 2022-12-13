@@ -1,0 +1,1800 @@
+{
+	"info": {
+		"_postman_id": "999fd9e6-68e7-49e7-a291-965d143012ad",
+		"name": "KAFKA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19161268"
+	},
+	"item": [
+		{
+			"name": "producers",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/producers",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"producers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/producers/add?name={{producer}}&lingerMs=30000&acks=1&batchSizeBytes=16834",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"producers",
+								"add"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{producer}}"
+								},
+								{
+									"key": "lingerMs",
+									"value": "30000"
+								},
+								{
+									"key": "acks",
+									"value": "1"
+								},
+								{
+									"key": "batchSizeBytes",
+									"value": "16834"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "closeAll",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/producers/closeAll",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"producers",
+								"closeAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "close",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/producers/close?name={{producer}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"producers",
+								"close"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{producer}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAll",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/producers",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"producers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendAsync",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/producers/sendAsync?name={{producer}}&topic={{topic}}&partition=1&value=jj",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"producers",
+								"sendAsync"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{producer}}"
+								},
+								{
+									"key": "topic",
+									"value": "{{topic}}"
+								},
+								{
+									"key": "partition",
+									"value": "1"
+								},
+								{
+									"key": "value",
+									"value": "jj"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendBatch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/producers/sendBatch?name={{producer}}&topic=games&howMuch=100",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"producers",
+								"sendBatch"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{producer}}"
+								},
+								{
+									"key": "topic",
+									"value": "games"
+								},
+								{
+									"key": "howMuch",
+									"value": "100"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "consumers",
+			"item": [
+				{
+					"name": "stopAllandGet",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "start",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/start?name={{consumer}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"start"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "startAll",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/startAll",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"startAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "stop",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/stop?name={{consumer}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"stop"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "stopAll",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/stopAll",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"stopAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subscribe",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/subscribe?name={{consumer}}&topic={{topic}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"subscribe"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								},
+								{
+									"key": "topic",
+									"value": "{{topic}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assignAll",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/assignAll?name=consumer&topic=games_part&partitions=3",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"assignAll"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "consumer"
+								},
+								{
+									"key": "topic",
+									"value": "games_part"
+								},
+								{
+									"key": "partitions",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/add?name=consumer2&enableAutoCommit=false&autoCommitIntervalMs=1000&autoOffsetReset=latest",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"add"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "consumer2"
+								},
+								{
+									"key": "groupId",
+									"value": "group1",
+									"disabled": true
+								},
+								{
+									"key": "enableAutoCommit",
+									"value": "false"
+								},
+								{
+									"key": "autoCommitIntervalMs",
+									"value": "1000"
+								},
+								{
+									"key": "autoOffsetReset",
+									"value": "latest"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addDuplicate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/addDuplicate?name={{consumer}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"addDuplicate"
+							],
+							"query": [
+								{
+									"key": "groupId",
+									"value": "group1",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "close",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/close?name={{consumer}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"close"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "closeAll",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/closeAll",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"closeAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/delete?name={{consumer}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAll",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "singlePoll",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/singlePoll?name={{consumer}}&duration=1500",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"singlePoll"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								},
+								{
+									"key": "duration",
+									"value": "1500"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "multiplePolls",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/multiplePolls?name={{consumer}}&duration=1500&howMuch=5",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"multiplePolls"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								},
+								{
+									"key": "duration",
+									"value": "1500"
+								},
+								{
+									"key": "howMuch",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "seek",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/seek?name={{consumer}}&topic={{topic}}&partition=1&offset=0",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"seek"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								},
+								{
+									"key": "topic",
+									"value": "{{topic}}"
+								},
+								{
+									"key": "partition",
+									"value": "1"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "seekAll",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/consumers/seekAll?name={{consumer}}&offset=0",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"consumers",
+								"seekAll"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{consumer}}"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "avro",
+			"item": [
+				{
+					"name": "producers",
+					"item": [
+						{
+							"name": "getReflections",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/producers/reflections",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"producers",
+										"reflections"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getGenerics",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/producers/generics",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"producers",
+										"generics"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add reflections",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/producers/add/reflection?name={{producer}}",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"producers",
+										"add",
+										"reflection"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{producer}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add generics",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/producers/add/generic?name={{producer}}&isWithSchemaRegistry=true",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"producers",
+										"add",
+										"generic"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{producer}}"
+										},
+										{
+											"key": "isWithSchemaRegistry",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "closeAll",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/producers/closeAll",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"producers",
+										"closeAll"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteAll",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/producers",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"producers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sendAsync reflection",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 123,\n    \"name\": \"Falloit\",\n    \"type\": \"Shooter\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/producers/sendAsync/reflection?name={{producer}}&topic=games_avro&partition=1",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"producers",
+										"sendAsync",
+										"reflection"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{producer}}"
+										},
+										{
+											"key": "topic",
+											"value": "games_avro"
+										},
+										{
+											"key": "partition",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sendAsync generic",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 123,\n    \"name\": \"Fallout\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/producers/sendAsync/generic?name={{producer}}&topic=games_part&partition=2&schemaName=game-no-type.avsc",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"producers",
+										"sendAsync",
+										"generic"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{producer}}"
+										},
+										{
+											"key": "topic",
+											"value": "games_part"
+										},
+										{
+											"key": "partition",
+											"value": "2"
+										},
+										{
+											"key": "schemaName",
+											"value": "game-no-type.avsc"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "consumers",
+					"item": [
+						{
+							"name": "getGenerics",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "addReflection",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers/add?name=consumer2&enableAutoCommit=false&autoCommitIntervalMs=1000&autoOffsetReset=latest",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers",
+										"add"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "consumer2"
+										},
+										{
+											"key": "groupId",
+											"value": "group1",
+											"disabled": true
+										},
+										{
+											"key": "enableAutoCommit",
+											"value": "false"
+										},
+										{
+											"key": "autoCommitIntervalMs",
+											"value": "1000"
+										},
+										{
+											"key": "autoOffsetReset",
+											"value": "latest"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addGeneric",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers/addGeneric?name=consumer2&enableAutoCommit=false&autoCommitIntervalMs=1000&autoOffsetReset=latest",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers",
+										"addGeneric"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "consumer2"
+										},
+										{
+											"key": "groupId",
+											"value": "group1",
+											"disabled": true
+										},
+										{
+											"key": "enableAutoCommit",
+											"value": "false"
+										},
+										{
+											"key": "autoCommitIntervalMs",
+											"value": "1000"
+										},
+										{
+											"key": "autoOffsetReset",
+											"value": "latest"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addGeneric2 (schema registry)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers/addGeneric2?name=consumer2&enableAutoCommit=false&autoCommitIntervalMs=1000&autoOffsetReset=latest",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers",
+										"addGeneric2"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "consumer2"
+										},
+										{
+											"key": "groupId",
+											"value": "group1",
+											"disabled": true
+										},
+										{
+											"key": "enableAutoCommit",
+											"value": "false"
+										},
+										{
+											"key": "autoCommitIntervalMs",
+											"value": "1000"
+										},
+										{
+											"key": "autoOffsetReset",
+											"value": "latest"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assignAll reflection",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers/assignAll?name={{consumer}}&topic={{topic}}",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers",
+										"assignAll"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{consumer}}"
+										},
+										{
+											"key": "topic",
+											"value": "{{topic}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assignAll generic",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers/assignAllGeneric?name={{consumer}}&topic={{topic}}",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers",
+										"assignAllGeneric"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{consumer}}"
+										},
+										{
+											"key": "topic",
+											"value": "{{topic}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "singlePoll reflection",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers/singlePoll?name={{consumer}}&duration=1500",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers",
+										"singlePoll"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{consumer}}"
+										},
+										{
+											"key": "duration",
+											"value": "1500"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "singlePoll generic",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers/singlePollGeneric?name={{consumer}}&duration=1500",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers",
+										"singlePollGeneric"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{consumer}}"
+										},
+										{
+											"key": "duration",
+											"value": "1500"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteAll reflection + generic",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "seekAll reflection",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers/seekAll?name={{consumer}}&offset=0",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers",
+										"seekAll"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{consumer}}"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "seekAll generic",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{KAFKA_HOST}}/avro/consumers/seekAllGeneric?name={{consumer}}&offset=0",
+									"host": [
+										"{{KAFKA_HOST}}"
+									],
+									"path": [
+										"avro",
+										"consumers",
+										"seekAllGeneric"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "{{consumer}}"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "tables",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.status == \"Created\") {",
+									"    pm.environment.set(\"table\", pm.request.url.query.get(\"name\"));",
+									"    pm.environment.set(\"store\", pm.request.url.query.get(\"storeName\"));",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables?name=table2&topic=games&groupId=randomGroup&storeName=games&tableCommitIntervalMs=30000",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "table2"
+								},
+								{
+									"key": "topic",
+									"value": "games"
+								},
+								{
+									"key": "groupId",
+									"value": "randomGroup"
+								},
+								{
+									"key": "storeName",
+									"value": "games"
+								},
+								{
+									"key": "tableCommitIntervalMs",
+									"value": "30000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addUpperCase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.status == \"Created\") {",
+									"    pm.environment.set(\"table\", pm.request.url.query.get(\"name\"));",
+									"    pm.environment.set(\"store\", pm.request.url.query.get(\"storeName\"));",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables/addUpperCase?name=table2&groupId=randomGroup",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables",
+								"addUpperCase"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "table2"
+								},
+								{
+									"key": "groupId",
+									"value": "randomGroup"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addWindow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.status == \"Created\") {",
+									"    pm.environment.set(\"table\", pm.request.url.query.get(\"name\"));",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables/addWindow?name=hop&topic=games&groupId=randomGroup1&tableCommitIntervalMs=60000&windowLengthSec=5&windowShiftSec=2&windowAfterEndSec=3600",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables",
+								"addWindow"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "hop",
+									"description": "windows: \"session\", \"tumble\" or \"hop\""
+								},
+								{
+									"key": "topic",
+									"value": "games"
+								},
+								{
+									"key": "groupId",
+									"value": "randomGroup1"
+								},
+								{
+									"key": "tableCommitIntervalMs",
+									"value": "60000"
+								},
+								{
+									"key": "windowLengthSec",
+									"value": "5",
+									"description": "windows"
+								},
+								{
+									"key": "windowShiftSec",
+									"value": "2",
+									"description": "windows"
+								},
+								{
+									"key": "windowAfterEndSec",
+									"value": "3600",
+									"description": "windows"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addKeyDuplicatesCount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.status == \"Created\") {",
+									"    pm.environment.set(\"table\", pm.request.url.query.get(\"name\"));",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables/addKeyDuplicatesCount?name=table3&topic=games&groupId=group1&tableCommitIntervalMs=30000",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables",
+								"addKeyDuplicatesCount"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "table3"
+								},
+								{
+									"key": "topic",
+									"value": "games"
+								},
+								{
+									"key": "groupId",
+									"value": "group1"
+								},
+								{
+									"key": "tableCommitIntervalMs",
+									"value": "30000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addTrafficPunctuator",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.status == \"Created\") {",
+									"    pm.environment.set(\"table\", pm.request.url.query.get(\"name\"));",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables/addTrafficPunctuator?name=punctuator&groupId=group1",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables",
+								"addTrafficPunctuator"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "punctuator"
+								},
+								{
+									"key": "groupId",
+									"value": "group1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addMulti",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.status == \"Created\") {",
+									"    pm.environment.set(\"table\", pm.request.url.query.get(\"name\"));",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables/addMulti?name=multi&groupId=group1&sourceTopics=games,games2,games3",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables",
+								"addMulti"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "multi"
+								},
+								{
+									"key": "groupId",
+									"value": "group1"
+								},
+								{
+									"key": "sourceTopics",
+									"value": "games,games2,games3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "state",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables/state?name={{table}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables",
+								"state"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{table}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "store",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables/store?name={{table}}&storeName={{store}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables",
+								"store"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{table}}"
+								},
+								{
+									"key": "storeName",
+									"value": "{{store}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "start",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables/start?name={{table}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables",
+								"start"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{table}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "close",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables/close?name={{table}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables",
+								"close"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{table}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_HOST}}/tables?name={{table}}",
+							"host": [
+								"{{KAFKA_HOST}}"
+							],
+							"path": [
+								"tables"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{table}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "connect",
+			"item": [
+				{
+					"name": "connector-plugins",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_CONNECT_HOST}}/connector-plugins",
+							"host": [
+								"{{KAFKA_CONNECT_HOST}}"
+							],
+							"path": [
+								"connector-plugins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "connectors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_CONNECT_HOST}}/connectors",
+							"host": [
+								"{{KAFKA_CONNECT_HOST}}"
+							],
+							"path": [
+								"connectors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "connector",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.status == \"Created\") {",
+									"    pm.environment.set(\"connector\", JSON.parse(pm.request.body.raw).name);",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"file-source-test\",\n    \"config\": {\n        \"connector.class\": \"FileStreamSource\",\n        \"file\": \"/tmp/file.txt\",\n        \"topic\": \"file-source\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{KAFKA_CONNECT_HOST}}/connectors",
+							"host": [
+								"{{KAFKA_CONNECT_HOST}}"
+							],
+							"path": [
+								"connectors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_CONNECT_HOST}}/connectors/{{connector}}/tasks",
+							"host": [
+								"{{KAFKA_CONNECT_HOST}}"
+							],
+							"path": [
+								"connectors",
+								"{{connector}}",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pause",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_CONNECT_HOST}}/connectors/{{connector}}/pause",
+							"host": [
+								"{{KAFKA_CONNECT_HOST}}"
+							],
+							"path": [
+								"connectors",
+								"{{connector}}",
+								"pause"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_CONNECT_HOST}}/connectors/{{connector}}/status",
+							"host": [
+								"{{KAFKA_CONNECT_HOST}}"
+							],
+							"path": [
+								"connectors",
+								"{{connector}}",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{KAFKA_CONNECT_HOST}}/connectors/{{connector}}",
+							"host": [
+								"{{KAFKA_CONNECT_HOST}}"
+							],
+							"path": [
+								"connectors",
+								"{{connector}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
